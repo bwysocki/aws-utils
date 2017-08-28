@@ -1,0 +1,22 @@
+# This is a sample build configuration for all languages.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+# image: docker-image:tag
+
+pipelines:
+  default:
+    - step:
+        script:
+          - apt-get update # required to install zip
+          - apt-get install -y python-pip python-dev build-essential 
+          - apt-get install -y zip # required if you want to zip repository objects
+          - pip install boto3==1.3.0 # required for s3_upload.py
+          - zip s3.zip *
+          # the first argument is the name of the existing S3 bucket to upload the artefact to
+          # the second argument is the artefact to be uploaded
+          # the third argument is the the bucket key
+          - python s3_upload.py storeme-test s3.zip bitbucket # run the deployment script
+          # Example command line parameters. Replace with your values
+          #- python s3_upload.py bb-s3-upload SampleApp_Linux.zip SampleApp_Linux # run the deployment script
