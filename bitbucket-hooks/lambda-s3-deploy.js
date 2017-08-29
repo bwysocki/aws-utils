@@ -38,7 +38,7 @@ exports.handler = (event, context, callback) => {
             console.log(message);
             callback(message);
         } else {
-            var lastKey = key.substr(key.lastIndexOf('/') + 1)
+            var lastKey = key.replace('s3-build/build/', '')
             putObjectToS3('storeme-test-static', lastKey, data.Body)
             console.log('CONTENT TYPE:', data, lastKey);
             callback(null, data.ContentType);
